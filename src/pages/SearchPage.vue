@@ -79,6 +79,7 @@ const doClose = (tag) => {
     return item !== tag;
   })
 }
+
 const router=useRouter();
 const doSearchResult = () =>{
   router.push({

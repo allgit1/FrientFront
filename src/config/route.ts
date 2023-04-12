@@ -5,7 +5,7 @@ import TeamPage from "../pages/TeamPage.vue";
 import UserPage from "../pages/UserPage.vue";
 import SearchPage from "../pages/SearchPage.vue"
 import EditUserPage from "../pages/UserEditPage.vue"
-import UserResultPage from "../pages/UserResultPage.vue"
+import UserResultPage from "../pages/SearchResultPage.vue"
 
 const routes = [
     { path: '/', component: Index },
