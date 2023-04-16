@@ -2,9 +2,11 @@ import axios, {AxiosInstance} from "axios";
 
 // 创建实例时配置默认值
 const myAxios:AxiosInstance = axios.create({
-    baseURL: 'http://localhost:8080/api'
+    baseURL: 'http://localhost:8080/api',
+    withCredentials: true
 });
-
+//像后台发送请求的时候携带cookie
+// myAxios.defaults.withCredentials=true;
 
 // 添加请求拦截器
 myAxios.interceptors.request.use(function (config) {
@@ -21,7 +23,7 @@ myAxios.interceptors.response.use(function (response) {
     // 2xx 范围内的状态码都会触发该函数。
     // 对响应数据做点什么
     console.log("我收到请求了",response)
-    return response;
+    return response.data;
 }, function (error) {
     // 超出 2xx 范围的状态码都会触发该函数。
     // 对响应错误做点什么

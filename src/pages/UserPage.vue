@@ -1,61 +1,46 @@
 <template>
+  <template v-if="user">
   <van-cell title="id" is-link to="/user/edit" :value="user.id"/>
   <van-cell title="昵称" is-link to="/user/edit" :value="user.username"/>
+  <van-cell title="头像" is-link to="/user/edit" :value="user.avatarUrl"/>
   <van-cell title="账户" is-link to="/user/edit" :value="user.userAccount"/>
   <van-cell title="性别" is-link :value="user.gender" @click="toEdit('gender','性别',user.gender)"/>
   <van-cell title="电话" is-link  :value="user.phone" @click="toEdit('phone','电话',user.phone) "/>
   <van-cell title="邮箱" is-link to="/user/edit" :value="user.email"/>
   <van-cell title="星球编号"  :value="user.planetCode"/>
-  <van-cell title="注册时间"  :value="user.createTime.toISOString()"/>
+  <van-cell title="注册时间"  :value="user.createTime"/>
+  </template>
 </template>
 
 <script setup lang="ts">
 
 
 import {useRouter} from "vue-router";
-import {onMounted} from "vue";
+import {onMounted, ref} from "vue";
 import myAxios from "../plugins/myAxios";
 import {Toast} from "vant";
 
-const user={
-  id: 1,
-  username: 'mjh',
-  userAccount: 'mjh666',
-  gender: '男',
-  phone: '123456',
-  email: '123@qq.com',
-  planetCode: '123',
-  createTime: new Date(),
-}
-// onMounted(async () => {
-//   const userListData =await myAxios.get('/user/search/tags', {
-//     params: {
-//       tagNameList: tags
-//     },
-//     paramsSerializer:  {
-//       serialize:params => {
-//         return qs.stringify(params,{arrayFormat:'repeat'})
-//       }
-//     }
-//   })
-//       .then(function (response) {
-//         console.log("/user/search/tags success",response);
-//         Toast.success('请求成功');
-//         return response.data?.data;
-//       })
-//       .catch(function (error) {
-//         console.error("/user/search/tags success error",error);
-//         Toast.fail("请求失败")
-//       })
-//   if (userListData){
-//     userListData.forEach(user =>{
-//       if (user.tags){
-//         user.tags=JSON.parse(user.tags);
-//       }
-//     })
-//     userList.value=userListData;
-//   }
-// })
+// const user={
+//   id: 1,
+//   username: 'mjh',
+//   avatarUrl: "https://raw.githubusercontent.com/allgit1/picgogithub/main/img/202304132251066.png",
+//   userAccount: 'mjh666',
+//   gender: '男',
+//   phone: '123456',
+//   email: '123@qq.com',
+//   planetCode: '123',
+//   createTime: new Date(),
+// }
+const user=ref();
+onMounted(async ()=>{
+  const res = await myAxios.get('/user/current');
+  if (res.code === 0){
+    user.value =res.data;
+    Toast.success('获取用户信息成功');
+  }else {
+    Toast.fail('获取用户信息失败');
+  }
+})
 const router=useRouter();
 const toEdit=(editKey: string, editName: string, currentValue: string)=>{
   router.push({
