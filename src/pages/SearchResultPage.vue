@@ -41,7 +41,7 @@ onMounted(async () => {
       .then(function (response) {
         console.log("/user/search/tags success",response);
         Toast.success('请求成功');
-        return response.data?.data;
+        return response?.data;
       })
       .catch(function (error) {
         console.error("/user/search/tags success error",error);

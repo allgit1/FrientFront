@@ -19,22 +19,29 @@
 import {ref} from "vue";
 import myAxios from "../plugins/myAxios";
 import {Toast} from "vant";
-import {useRoute} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
+import {getCurrentUser} from "../services/user";
 const route = useRoute();
-const router=useRoute();
+const router=useRouter();
+
 const editUser = ref({
   editKey: route.query.editKey,
   currentValue: route.query.currentValue,
   editName: route.query.editName,
 })
 const onSubmit = async () => {
+  const currentUser=await getCurrentUser();
+  console.log("-----UserEditPage",currentUser);
   const res=await myAxios.post('/user/update',{
-    'id':23,
+    'id':currentUser.id,
     [editUser.value.editKey as string]:editUser.value.currentValue,
   })
+  console.log("修改用户信息",res);
   if (res.code===0&&res.data>0){
     Toast.success("修改成功");
-    router.back();
+    router.replace("/user")
+  }else {
+    Toast.fail("修改失败")
   }
 }
 
